@@ -6,6 +6,7 @@ using AltinnApplicationOwnerSystem.Functions.Config;
 using AltinnApplicationOwnerSystem.Functions.Models;
 using AltinnApplicationOwnerSystem.Functions.Services.Interface;
 using Azure.Storage.Queues;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
@@ -22,22 +23,29 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 
         private QueueClient _confirmationQueueClient;
 
+        private readonly ILogger _logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="QueueService"/> class.
         /// </summary>
         /// <param name="settings">The queue storage settings</param>
-        public QueueService(IOptions<QueueStorageSettings> settings)
+        public QueueService(IOptions<QueueStorageSettings> settings, ILogger<QueueService> logger)
         {
             _settings = settings.Value;
+            _logger = logger;
         }
 
         /// <inheritdoc/>
         public async Task<PushQueueReceipt> PushToInboundQueue(string content)
         {
+            _logger.LogInformation("HAHAHAHAHAHAH");
+
             if (!_settings.EnablePushToQueue)
             {
                 return new PushQueueReceipt { Success = true };
             }
+
+            _logger.LogInformation("HOHOHOHO");
 
             try
             {
@@ -46,6 +54,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             }
             catch (Exception e)
             {
+                
                 return new PushQueueReceipt { Success = false, Exception = e };
             }
 

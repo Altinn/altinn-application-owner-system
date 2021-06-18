@@ -1,14 +1,13 @@
 using System.IO;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AltinnApplicationOwnerSystem.Functions.Config;
 using AltinnApplicationOwnerSystem.Functions.Models;
-using AltinnApplicationOwnerSystem.Functions.Services.Implementation;
 using AltinnApplicationOwnerSystem.Functions.Services.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -30,14 +29,17 @@ namespace AltinnApplicationOwnerSystem.Functions
             _queueService = queueSerice;
         }
 
-        [FunctionName("EventsReceiver")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        [Function("EventsReceiver")]
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequestData req,
+            FunctionContext executionContext)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-           
-            string name = req.Query["name"];
+
+            var logger = executionContext.GetLogger("EventsReceiver");
+
+            logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            string name = "";
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             CloudEvent cloudEvent = JsonSerializer.Deserialize<CloudEvent>(requestBody);
@@ -48,8 +50,10 @@ namespace AltinnApplicationOwnerSystem.Functions
             string responseMessage = string.IsNullOrEmpty(name)
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
                 : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+            
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            response.WriteString(responseMessage);
+            return response;
         }
     }
 }

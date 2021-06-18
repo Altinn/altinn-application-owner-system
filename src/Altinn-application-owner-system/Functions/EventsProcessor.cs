@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Altinn.Platform.Storage.Interface.Models;
 using AltinnApplicationOwnerSystem.Functions.Models;
 using AltinnApplicationOwnerSystem.Functions.Services.Interface;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
@@ -34,8 +35,8 @@ namespace AltinnApplicationOwnerSystem.Functions
         /// <summary>
         /// Reads cloud event from events-inbound queue and download instance and data for that given event and store it to configured azure storage
         /// </summary>
-        [FunctionName("EventsProcessor")]
-        public async Task Run([QueueTrigger("events-inbound", Connection = "QueueStorage")] string item, ILogger log)
+        [Function(nameof(EventsProcessor))]
+        public async Task Run([QueueTrigger("events-inbound", Connection = "QueueStorage")] string item, FunctionContext executionContext)
         {
             CloudEvent cloudEvent = System.Text.Json.JsonSerializer.Deserialize<CloudEvent>(item);
             if (ShouldProcessEvent(cloudEvent))
