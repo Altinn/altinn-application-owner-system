@@ -88,6 +88,5 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 
             return _confirmationQueueClient;
         }
-
     }
 }

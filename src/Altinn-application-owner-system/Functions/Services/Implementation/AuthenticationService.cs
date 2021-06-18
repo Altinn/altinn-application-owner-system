@@ -111,7 +111,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             X509SecurityKey securityKey = new X509SecurityKey(cert);
             JwtHeader header = new JwtHeader(new SigningCredentials(securityKey, SecurityAlgorithms.RsaSha256))
             {
-                {"x5c", new List<string>() {Convert.ToBase64String(cert.GetRawCertData())}}
+                { "x5c", new List<string>() { Convert.ToBase64String(cert.GetRawCertData()) } }
             };
             header.Remove("typ");
             header.Remove("kid");
@@ -153,6 +153,5 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 
             return cert;
         }
-
     }
 }

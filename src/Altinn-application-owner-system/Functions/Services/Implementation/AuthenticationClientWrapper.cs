@@ -38,7 +38,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         public async Task<string> ConvertToken(string token)
         {
             string cmd = $@"{_settings.PlatformBaseUrl}authentication/api/v1/exchange/maskinporten?test={_settings.TestMode}";
-            HttpResponseMessage response = await _client.GetAsync(token,cmd);
+            HttpResponseMessage response = await _client.GetAsync(token, cmd);
 
             if (response.IsSuccessStatusCode)
             {

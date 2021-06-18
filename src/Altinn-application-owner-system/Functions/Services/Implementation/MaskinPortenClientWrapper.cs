@@ -63,7 +63,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             else
             {
                 string error = await response.Content.ReadAsStringAsync();
-                _logger.LogError( @"Could not retrieve Token" + error);
+                _logger.LogError(@"Could not retrieve Token" + error);
             }
 
             return null;

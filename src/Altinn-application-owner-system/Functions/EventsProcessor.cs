@@ -74,7 +74,7 @@ namespace AltinnApplicationOwnerSystem.Functions
         private Instance CreateInstanceFromSource(CloudEvent cloudEvent)
         {
             Instance instance = new Instance();
-            string[] parts =  cloudEvent.Source.PathAndQuery.Split("/");
+            string[] parts = cloudEvent.Source.PathAndQuery.Split("/");
             instance.AppId = $"{parts[1]}/{parts[2]}";
             instance.Org = $"{parts[1]}";
             instance.InstanceOwner = new InstanceOwner() { PartyId = parts[4] };

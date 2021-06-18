@@ -37,7 +37,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
                 if (certificateProperties.Enabled == true &&
                     (certificateProperties.ExpiresOn == null || certificateProperties.ExpiresOn >= DateTime.UtcNow))
                 {                    
-                    SecretClient secretClient = new SecretClient(new Uri(vaultUri), new  DefaultAzureCredential());
+                    SecretClient secretClient = new SecretClient(new Uri(vaultUri), new DefaultAzureCredential());
 
                     KeyVaultSecret secret = await secretClient.GetSecretAsync(certificateProperties.Name, certificateProperties.Version);
                     return secret.Value;

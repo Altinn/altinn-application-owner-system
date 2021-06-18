@@ -86,6 +86,5 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 
             throw new ApplicationException();
         }
-
     }
 }
