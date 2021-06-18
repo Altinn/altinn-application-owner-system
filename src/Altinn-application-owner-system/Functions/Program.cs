@@ -4,7 +4,6 @@ using AltinnApplicationOwnerSystem.Functions.Services.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using static AltinnApplicationsOwnerSystem.Functions.Function4.Function5;
 
 namespace AltinnApplicationsOwnerSystem.Functions
 {
