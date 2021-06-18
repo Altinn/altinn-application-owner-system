@@ -38,8 +38,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings, 
             HttpClient httpClient, 
             IAuthenticationService authenticationService,
-            ILogger<AltinnAppSI> logger
-            )
+            ILogger<AltinnAppSI> logger)
         {
             _settings = altinnIntegratorSettings.Value;
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

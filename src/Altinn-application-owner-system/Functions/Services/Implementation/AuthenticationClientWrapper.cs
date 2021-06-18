@@ -9,6 +9,9 @@ using Microsoft.Extensions.Options;
 
 namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 {
+    /// <summary>
+    /// HttpClient wrapper responsible for calling Altinn Platform Authentication to convert MaskinPorten token to AltinnToken
+    /// </summary>
     public class AuthenticationClientWrapper : IAuthenticationClientWrapper
     {
         private readonly HttpClient _client;
@@ -19,7 +22,6 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         /// Gets or sets the base address
         /// </summary>
         private string BaseAddress { get; set; }
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationClientWrapper" /> class.
@@ -32,6 +34,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             _client = httpClient;
         }
 
+        /// <inheritdoc/>
         public async Task<string> ConvertToken(string token)
         {
             string cmd = $@"{_settings.PlatformBaseUrl}authentication/api/v1/exchange/maskinporten?test={_settings.TestMode}";

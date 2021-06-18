@@ -1,14 +1,17 @@
-﻿using AltinnApplicationOwnerSystem.Functions.Config;
-using AltinnApplicationOwnerSystem.Functions.Services.Interface;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using AltinnApplicationOwnerSystem.Functions.Config;
+using AltinnApplicationOwnerSystem.Functions.Services.Interface;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 {
+    /// <summary>
+    /// HttpClient wrapper responsible for calling the MaskinPorten endpont to authenticate the Application Owner System
+    /// </summary>
     public class MaskinportenClientWrapper : IMaskinPortenClientWrapper
     {
         /// <summary>
@@ -18,7 +21,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 
         private readonly HttpClient _client;
 
-        protected static ILogger _logger;
+        private static ILogger _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationClientWrapper" /> class.
@@ -38,6 +41,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         /// </summary>
         private string BaseAddress { get; set; }
 
+        /// <inheritdoc/>
         public async Task<string> PostToken(FormUrlEncodedContent bearer)
         {
             string token = string.Empty;

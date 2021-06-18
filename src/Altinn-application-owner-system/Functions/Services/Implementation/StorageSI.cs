@@ -17,6 +17,9 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
     {
         private readonly AltinnApplicationOwnerSystemSettings _settings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StorageSI"/> class.
+        /// </summary>
         public StorageSI(IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings)
         {
             _settings = altinnIntegratorSettings.Value;
@@ -25,9 +28,6 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         /// <summary>
         /// Saves data in blob storage defined in configuration.
         /// </summary>
-        /// <param name="config">Configuration.</param>
-        /// <param name="name">Blob name.</param>
-        /// <param name="data">Blob data.</param>
         public async Task SaveBlob(string name, string data)
         {
             BlobClient client;
@@ -47,6 +47,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             stream.Dispose();
         }
 
+        /// <inheritdoc/>
         public async Task<long> UploadFromStreamAsync(Stream stream, string fileName)
         {
             BlobClient blockBlob = CreateBlobClient(fileName);

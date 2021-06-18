@@ -1,20 +1,23 @@
-﻿using AltinnApplicationOwnerSystem.Functions.Config;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+using AltinnApplicationOwnerSystem.Functions.Config;
 using AltinnApplicationOwnerSystem.Functions.Services.Interface;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 {
-    public class AuthenticationService: IAuthenticationService
+    /// <summary>
+    /// Authentication service responsible for authenticate the application owner system in MaskinPorten and Exchange token to an Altinn token
+    /// </summary>
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly KeyVaultSettings _keyVaultSettings;
         private readonly IKeyVaultService _keyVaultService;
@@ -23,8 +26,11 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         private readonly IAuthenticationClientWrapper _authenticationClientWrapper;
         private readonly ILogger _logger;
         private string _altinnToken;
-        private DateTime _tokenTimeout; 
+        private DateTime _tokenTimeout;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationService"/> class.
+        /// </summary>
         public AuthenticationService(
             IKeyVaultService keyVaultService, 
             IOptions<KeyVaultSettings> keyVaultSettings, 
@@ -41,7 +47,6 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             _logger = logger;
         }
 
-
         /// <summary>
         /// Creates a altinn token. First login to MaskinPorten and then call altinn to convert to Altinn token.
         /// </summary>
@@ -49,7 +54,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         public async Task<string> GetAltinnToken()
         {
             // To reduce traffic we cache this.
-            if(!string.IsNullOrEmpty(_altinnToken) && _tokenTimeout > DateTime.Now)
+            if (!string.IsNullOrEmpty(_altinnToken) && _tokenTimeout > DateTime.Now)
             {
                 return _altinnToken;
             }
@@ -69,7 +74,6 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
                 _tokenTimeout = DateTime.Now.AddSeconds(9);
                 return altinnToken;
             }
-            
 
             return null;
         }
@@ -134,8 +138,6 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             string certBase64 = await _keyVaultService.GetCertificateAsync(_keyVaultSettings.KeyVaultURI, _keyVaultSettings.MaskinPortenCertSecretId);
             return new X509Certificate2(Convert.FromBase64String(certBase64), (string)null, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
        }
-
-
 
         private static X509Certificate2 GetCertificateFromKeyStore(string thumbprint, StoreName storeName, StoreLocation storeLocation, bool onlyValid = false)
         {

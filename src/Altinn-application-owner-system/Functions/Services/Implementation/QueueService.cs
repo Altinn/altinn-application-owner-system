@@ -38,36 +38,22 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         /// <inheritdoc/>
         public async Task<PushQueueReceipt> PushToInboundQueue(string content)
         {
-            _logger.LogInformation("HAHAHAHAHAHAH");
-
-            if (!_settings.EnablePushToQueue)
-            {
-                return new PushQueueReceipt { Success = true };
-            }
-
-            _logger.LogInformation("HOHOHOHO");
-
             try
             {
                 QueueClient client = await GetInboundQueueClient();
                 await client.SendMessageAsync(Convert.ToBase64String(Encoding.UTF8.GetBytes(content)));
             }
             catch (Exception e)
-            {
-                
+            {   
                 return new PushQueueReceipt { Success = false, Exception = e };
             }
 
             return new PushQueueReceipt { Success = true };
         }
 
+        /// <inheritdoc/>
         public async Task<PushQueueReceipt> PushToConfirmationQueue(string content)
         {
-            if (!_settings.EnablePushToQueue)
-            {
-                return new PushQueueReceipt { Success = true };
-            }
-
             try
             {
                 QueueClient client = await GetConfirmationQueueClient();

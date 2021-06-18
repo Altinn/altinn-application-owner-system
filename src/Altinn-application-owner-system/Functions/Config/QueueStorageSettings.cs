@@ -13,16 +13,11 @@ namespace AltinnApplicationOwnerSystem.Functions.Config
         /// <summary>
         /// Name of the queue to push incomming events to.
         /// </summary>
-        public string InboundQueueName { get; set; }
+        public string InboundQueueName { get; set; } = "events-inbound";
 
         /// <summary>
         /// Name of the queue to push confirmation
         /// </summary>
-        public string ConfirmationQueueName { get; set; }
-
-        /// <summary>
-        /// Indicated if events should be pushed to queue.
-        /// </summary>
-        public bool EnablePushToQueue { get; set; }
+        public string ConfirmationQueueName { get; set; } = "events-confirmation";
     }
 }

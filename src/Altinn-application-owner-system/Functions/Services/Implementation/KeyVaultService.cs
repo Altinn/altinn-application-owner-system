@@ -19,6 +19,9 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
     {
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeyVaultService"/> class.
+        /// </summary>
         public KeyVaultService(ILogger<KeyVaultService> logger)
         {
             _logger = logger;

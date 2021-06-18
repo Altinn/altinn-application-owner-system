@@ -1,13 +1,13 @@
-﻿using AltinnApplicationOwnerSystem.Functions.Config;
-using AltinnApplicationOwnerSystem.Functions.Extensions;
-using AltinnApplicationOwnerSystem.Functions.Services.Interface;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using AltinnApplicationOwnerSystem.Functions.Config;
+using AltinnApplicationOwnerSystem.Functions.Extensions;
+using AltinnApplicationOwnerSystem.Functions.Services.Interface;
+using Microsoft.Extensions.Options;
 
 namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 {
@@ -20,8 +20,13 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         private readonly AltinnApplicationOwnerSystemSettings _settings;
         private readonly IAuthenticationService _authenticationService;
 
-        public PlatformSI(IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings,
-            HttpClient httpClient, IAuthenticationService authenticationService)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlatformSI"/> class.
+        /// </summary>
+        public PlatformSI(
+            IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings,
+            HttpClient httpClient, 
+            IAuthenticationService authenticationService)
         {
             _settings = altinnIntegratorSettings.Value;
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -30,7 +35,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             _authenticationService = authenticationService;
         }
 
-
+        /// <inheritdoc/>
         public async Task<Stream> GetBinaryData(string dataUri)
         {
             string altinnToken = await _authenticationService.GetAltinnToken();

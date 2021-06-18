@@ -10,6 +10,11 @@ using Microsoft.Extensions.Logging;
 
 namespace AltinnApplicationOwnerSystem.Functions
 {
+    /// <summary>
+    /// Azure Function responsible for downloading data for a given instance.
+    /// Triggered by CloudEvent on Azure Queue
+    /// When finished it forward CloudEvent to confirmation queue
+    /// </summary>
     public class EventsProcessor
     {
         private readonly IAltinnApp _altinnApp;
@@ -20,6 +25,9 @@ namespace AltinnApplicationOwnerSystem.Functions
 
         private readonly IQueueService _queueService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventsProcessor"/> class.
+        /// </summary>
         public EventsProcessor(
             IAltinnApp altinnApp, 
             IPlatform platform, 

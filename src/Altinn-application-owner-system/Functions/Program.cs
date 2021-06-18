@@ -7,8 +7,14 @@ using Microsoft.Extensions.Hosting;
 
 namespace AltinnApplicationsOwnerSystem.Functions
 {
+    /// <summary>
+    /// Host program for Azure Function
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Main
+        /// </summary>
         public static void Main()
         {
             var host = new HostBuilder()
