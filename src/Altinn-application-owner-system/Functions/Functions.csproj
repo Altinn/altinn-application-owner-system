@@ -28,6 +28,7 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Warmup" Version="4.0.2" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.0.3" OutputItemType="Analyzer" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Core" Version="3.0.27" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="3.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
@@ -51,11 +52,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <AdditionalFiles Include="stylecop.json">
-      <Link>stylecop.json</Link>
+    <AdditionalFiles Include="settings.stylecop.json">
+      <Link>settings.stylecop.json</Link>
     </AdditionalFiles>
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <CodeAnalysisRuleSet>Altinn3.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\repos\altinn-application-owner-system\src\Altinn-application-owner-system\Functions\AltinnApplicationsOwnerSystemFunctions.xml</DocumentationFile>
   </PropertyGroup>
 </Project>

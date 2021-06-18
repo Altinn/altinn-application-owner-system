@@ -24,7 +24,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         private static ILogger _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationClientWrapper" /> class.
+        /// Initializes a new instance of the <see cref="MaskinportenClientWrapper" /> class.
         /// </summary>
         public MaskinportenClientWrapper(IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings, HttpClient httpClient, ILogger<MaskinportenClientWrapper> logger)
         {

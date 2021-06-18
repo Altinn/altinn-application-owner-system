@@ -28,7 +28,6 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         /// <summary>
         /// Initializes a new instance of the <see cref="QueueService"/> class.
         /// </summary>
-        /// <param name="settings">The queue storage settings</param>
         public QueueService(IOptions<QueueStorageSettings> settings, ILogger<QueueService> logger)
         {
             _settings = settings.Value;

@@ -28,12 +28,8 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         private readonly IAuthenticationService _authenticationService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InstanceAppSI"/> class.
+        /// Initializes a new instance of the <see cref="AltinnAppSI"/> class.
         /// </summary>
-        /// <param name="platformSettings">the platform settings</param>
-        /// <param name="logger">the logger</param>
-        /// <param name="httpClient">A HttpClient that can be used to perform HTTP requests against the platform.</param>
-        /// <param name="settings">The application settings.</param>
         public AltinnAppSI(
             IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings, 
             HttpClient httpClient, 
