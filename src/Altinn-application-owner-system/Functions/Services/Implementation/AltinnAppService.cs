@@ -47,7 +47,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         /// <inheritdoc />
         public async Task<Instance> GetInstance(string appId, string instanceId)
         {
-            string apiUrl = $"{_settings.AppsBaseUrl}/{appId}/instances/{instanceId}";
+            string apiUrl = $"{_settings.AppsBaseUrl}/{appId}instances/{instanceId}";
 
             string altinnToken = await _authenticationService.GetAltinnToken();
             
