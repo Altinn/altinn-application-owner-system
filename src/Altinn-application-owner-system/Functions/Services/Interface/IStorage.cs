@@ -14,8 +14,8 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Interface
         public Task SaveBlob(string name, string data);
 
         /// <summary>
-        /// Saves a stream to bloc
+        /// Saves a stream to blob
         /// </summary>
-        public Task<long> UploadFromStreamAsync(Stream stream, string fileName);
+        public Task<long> UploadFromStreamAsync(string name, Stream stream);
     }
 }

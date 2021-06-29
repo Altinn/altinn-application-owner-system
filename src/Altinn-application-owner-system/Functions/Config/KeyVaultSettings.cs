@@ -13,6 +13,6 @@ namespace AltinnApplicationOwnerSystem.Functions.Config
         /// <summary>
         /// Name of the certificate secret
         /// </summary>
-        public string MaskinPortenCertSecretId { get; set; } = "digdirtestcert";
+        public string MaskinPortenCertSecretId { get; set; } = "maskinportenclientcert";
     }
 }

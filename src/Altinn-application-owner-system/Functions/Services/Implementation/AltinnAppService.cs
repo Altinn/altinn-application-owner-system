@@ -17,7 +17,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
     /// <summary>
     /// App implementation of the instance service that talks to the given app
     /// </summary>
-    public class AltinnAppSI : IAltinnApp
+    public class AltinnAppService : IAltinnApp
     {
         private readonly ILogger _logger;
         
@@ -28,13 +28,13 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         private readonly IAuthenticationService _authenticationService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AltinnAppSI"/> class.
+        /// Initializes a new instance of the <see cref="AltinnAppService"/> class.
         /// </summary>
-        public AltinnAppSI(
+        public AltinnAppService(
             IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings, 
             HttpClient httpClient, 
             IAuthenticationService authenticationService,
-            ILogger<AltinnAppSI> logger)
+            ILogger<AltinnAppService> logger)
         {
             _settings = altinnIntegratorSettings.Value;
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -60,7 +60,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             }
             else
             {
-                _logger.LogError($"Unable to fetch instance with instance id {instanceId}");
+                _logger.LogError($"Unable to fetch instance with instance id {instanceId}" + response.StatusCode + apiUrl);
                 throw new ApplicationException();
             }
         }

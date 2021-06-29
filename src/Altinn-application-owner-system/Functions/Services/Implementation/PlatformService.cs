@@ -14,16 +14,16 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
     /// <summary>
     /// Service that downloads data from platform
     /// </summary>
-    public class PlatformSI : IPlatform
+    public class PlatformService : IPlatform
     {
         private readonly HttpClient _client;
         private readonly AltinnApplicationOwnerSystemSettings _settings;
         private readonly IAuthenticationService _authenticationService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlatformSI"/> class.
+        /// Initializes a new instance of the <see cref="PlatformService"/> class.
         /// </summary>
-        public PlatformSI(
+        public PlatformService(
             IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings,
             HttpClient httpClient, 
             IAuthenticationService authenticationService)

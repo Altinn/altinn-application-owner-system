@@ -41,9 +41,9 @@ namespace AltinnApplicationsOwnerSystem.Functions
                     s.AddTransient<IKeyVaultService, KeyVaultService>();
                     s.AddSingleton<IAuthenticationService, AuthenticationService>();
                     s.AddSingleton<IQueueService, QueueService>();
-                    s.AddSingleton<IStorage, StorageSI>();
-                    s.AddHttpClient<IAltinnApp, AltinnAppSI>();
-                    s.AddHttpClient<IPlatform, PlatformSI>();
+                    s.AddSingleton<IStorage, StorageService>();
+                    s.AddHttpClient<IAltinnApp, AltinnAppService>();
+                    s.AddHttpClient<IPlatform, PlatformService>();
                     s.AddHttpClient<IAuthenticationClientWrapper, AuthenticationClientWrapper>();
                     s.AddHttpClient<IMaskinPortenClientWrapper, MaskinportenClientWrapper>();
                 })

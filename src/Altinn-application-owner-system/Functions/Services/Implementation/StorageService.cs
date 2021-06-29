@@ -13,14 +13,14 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
     /// <summary>
     /// Class that handles integration with Azure Blob Storage.
     /// </summary>
-    public class StorageSI: IStorage
+    public class StorageService: IStorage
     {
         private readonly AltinnApplicationOwnerSystemSettings _settings;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StorageSI"/> class.
+        /// Initializes a new instance of the <see cref="StorageService"/> class.
         /// </summary>
-        public StorageSI(IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings)
+        public StorageService(IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings)
         {
             _settings = altinnIntegratorSettings.Value;
         }
@@ -48,9 +48,9 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         }
 
         /// <inheritdoc/>
-        public async Task<long> UploadFromStreamAsync(Stream stream, string fileName)
+        public async Task<long> UploadFromStreamAsync(string name, Stream stream)
         {
-            BlobClient blockBlob = CreateBlobClient(fileName);
+            BlobClient blockBlob = CreateBlobClient(name);
 
             await blockBlob.UploadAsync(stream, true);
             BlobProperties properties = await blockBlob.GetPropertiesAsync();

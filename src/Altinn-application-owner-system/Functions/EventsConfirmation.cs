@@ -27,7 +27,7 @@ namespace AltinnApplicationOwnerSystem.Functions
         /// </summary>
         /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
         [Function("EventsConfirmation")]
-        public async Task Run([QueueTrigger("events-confirmation", Connection = "QueueStorage")]string item, FunctionContext executionContext)
+        public async Task Run([QueueTrigger("events-confirmation", Connection = "QueueStorageSettings:ConnectionString")]string item, FunctionContext executionContext)
         {
             CloudEvent cloudEvent = System.Text.Json.JsonSerializer.Deserialize<CloudEvent>(item);
 

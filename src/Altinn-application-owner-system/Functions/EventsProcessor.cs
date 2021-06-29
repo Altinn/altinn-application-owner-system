@@ -44,7 +44,7 @@ namespace AltinnApplicationOwnerSystem.Functions
         /// Reads cloud event from events-inbound queue and download instance and data for that given event and store it to configured azure storage
         /// </summary>
         [Function(nameof(EventsProcessor))]
-        public async Task Run([QueueTrigger("events-inbound", Connection = "QueueStorage")] string item, FunctionContext executionContext)
+        public async Task Run([QueueTrigger("events-inbound", Connection = "QueueStorageSettings:ConnectionString")] string item, FunctionContext executionContext)
         {
             CloudEvent cloudEvent = System.Text.Json.JsonSerializer.Deserialize<CloudEvent>(item);
             if (ShouldProcessEvent(cloudEvent))
@@ -60,7 +60,7 @@ namespace AltinnApplicationOwnerSystem.Functions
                     ResourceLinks links = data.SelfLinks;
                     using (Stream stream = await _platform.GetBinaryData(links.Platform))
                     {
-                        await _storage.UploadFromStreamAsync(stream, data.BlobStoragePath);
+                        await _storage.UploadFromStreamAsync(data.BlobStoragePath, stream);
                     }
                 }
 

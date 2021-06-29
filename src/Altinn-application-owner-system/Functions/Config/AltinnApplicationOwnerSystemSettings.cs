@@ -20,7 +20,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Config
         public string PlatformBaseUrl { get; set; }
 
         /// <summary>
-        /// Endpoint to blop storage
+        /// Endpoint to blob storage
         /// </summary>
         public string BlobEndpoint { get; set; }
 
@@ -30,7 +30,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Config
         public string AccountName { get; set; }
 
         /// <summary>
-        /// The accound key for the Azure Storage Account
+        /// The account key for the Azure Storage Account
         /// </summary>
         public string AccountKey { get; set; }
 

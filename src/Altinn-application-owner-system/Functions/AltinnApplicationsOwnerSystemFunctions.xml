@@ -21,7 +21,7 @@
         </member>
         <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.BlobEndpoint">
             <summary>
-            Endpoint to blop storage
+            Endpoint to blob storage
             </summary>
         </member>
         <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.AccountName">
@@ -31,7 +31,7 @@
         </member>
         <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.AccountKey">
             <summary>
-            The accound key for the Azure Storage Account
+            The account key for the Azure Storage Account
             </summary>
         </member>
         <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.StorageContainer">
@@ -258,24 +258,20 @@
             Exception. Only populated if the push failed.
             </summary>
         </member>
-        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppSI">
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService">
             <summary>
             App implementation of the instance service that talks to the given app
             </summary>
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppSI.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient,AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppSI})">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient,AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService})">
             <summary>
-            Initializes a new instance of the <see cref="!:InstanceAppSI"/> class.
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService"/> class.
             </summary>
-            <param name="platformSettings">the platform settings</param>
-            <param name="logger">the logger</param>
-            <param name="httpClient">A HttpClient that can be used to perform HTTP requests against the platform.</param>
-            <param name="settings">The application settings.</param>
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppSI.GetInstance(System.String,System.String)">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService.GetInstance(System.String,System.String)">
             <inheritdoc />
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppSI.AddCompleteConfirmation(System.String)">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService.AddCompleteConfirmation(System.String)">
             <inheritdoc/>
         </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationClientWrapper">
@@ -344,7 +340,7 @@
         </member>
         <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper})">
             <summary>
-            Initializes a new instance of the <see cref="!:ApplicationClientWrapper" /> class.
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper" /> class.
             </summary>
         </member>
         <member name="P:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper.BaseAddress">
@@ -355,17 +351,17 @@
         <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper.PostToken(System.Net.Http.FormUrlEncodedContent)">
             <inheritdoc/>
         </member>
-        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformSI">
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformService">
             <summary>
             Service that downloads data from platform
             </summary>
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformSI.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient,AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService)">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformService.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient,AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService)">
             <summary>
-            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformSI"/> class.
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformService"/> class.
             </summary>
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformSI.GetBinaryData(System.String)">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformService.GetBinaryData(System.String)">
             <inheritdoc/>
         </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService">
@@ -377,7 +373,6 @@
             <summary>
             Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService"/> class.
             </summary>
-            <param name="settings">The queue storage settings</param>
         </member>
         <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService.PushToInboundQueue(System.String)">
             <inheritdoc/>
@@ -385,22 +380,22 @@
         <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService.PushToConfirmationQueue(System.String)">
             <inheritdoc/>
         </member>
-        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageSI">
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService">
             <summary>
             Class that handles integration with Azure Blob Storage.
             </summary>
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageSI.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings})">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings})">
             <summary>
-            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageSI"/> class.
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService"/> class.
             </summary>
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageSI.SaveBlob(System.String,System.String)">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.SaveBlob(System.String,System.String)">
             <summary>
             Saves data in blob storage defined in configuration.
             </summary>
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageSI.UploadFromStreamAsync(System.IO.Stream,System.String)">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.UploadFromStreamAsync(System.String,System.IO.Stream)">
             <inheritdoc/>
         </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp">
@@ -498,6 +493,21 @@
             </summary>
             <param name="content">The content to push to the queue in string format</param>
             <returns>Returns a queue receipt</returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage">
+            <summary>
+            Interface for Storage where Application Owner system store received data
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage.SaveBlob(System.String,System.String)">
+            <summary>
+            Saves a specific blob
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage.UploadFromStreamAsync(System.String,System.IO.Stream)">
+            <summary>
+            Saves a stream to blob
+            </summary>
         </member>
         <member name="T:AltinnApplicationsOwnerSystem.Functions.Program">
             <summary>
