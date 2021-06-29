@@ -60,7 +60,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             }
             else
             {
-                _logger.LogError($"Unable to fetch instance with instance id {instanceId} " + response.StatusCode + " " + apiUrl + "token " + altinnToken);
+                _logger.LogError($"Unable to fetch instance with instance id {instanceId} " + response.StatusCode + " " + apiUrl);
                 throw new ApplicationException();
             }
         }
