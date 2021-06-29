@@ -14,8 +14,14 @@ It uses Azure Blob Storage to store data.
 
 The events receiver is a webhook that receives events from Altinn Events.
 
-It will put the received Event in a Queue based on Azure Queue Storage
+It will put the received Event in a Queue based on Azure Queue Storage.
 
+The function is protected by a Azure Function code. This need to be present in URI in requests from Altinn events
+
+The endpoint for subscription need to include it. 
+Example: https://aos-ttdt22-function.azurewebsites.net/api/eventsreceiver?code=ffQqMrbvLoNEiySae0EfApmost8LfBeqdYY/AXa13KSyf8Rjsp1U9w==
+
+Azure creates the code when setting up the functions.
 
 ### Events Processor
 
