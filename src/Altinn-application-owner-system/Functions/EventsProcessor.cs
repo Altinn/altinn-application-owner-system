@@ -48,25 +48,29 @@ namespace AltinnApplicationOwnerSystem.Functions
         public async Task Run([QueueTrigger("events-inbound", Connection = "QueueStorageSettings:ConnectionString")] string item, FunctionContext executionContext)
         {
             CloudEvent cloudEvent = System.Text.Json.JsonSerializer.Deserialize<CloudEvent>(item);
-            if (ShouldProcessEvent(cloudEvent))
+            
+            if (!ShouldProcessEvent(cloudEvent))
             {
-                (string appId, string instanceId) appInfo = GetInstanceInfoFromSource(cloudEvent.Source);
-                Instance instance = await _altinnApp.GetInstance(appInfo.appId, appInfo.instanceId);
-
-                string instanceGuid = instance.Id.Split("/")[1];
-                string instancePath = instance.AppId + "/" + instanceGuid + "/" + instanceGuid;
-                await _storage.SaveBlob(instancePath, JsonSerializer.Serialize(instance));
-                foreach (DataElement data in instance.Data)
-                {
-                    ResourceLinks links = data.SelfLinks;
-                    using (Stream stream = await _platform.GetBinaryData(links.Platform))
-                    {
-                        await _storage.UploadFromStreamAsync(data.BlobStoragePath, stream);
-                    }
-                }
-
-                await _queueService.PushToConfirmationQueue(JsonSerializer.Serialize(cloudEvent));
+                return;
             }
+
+            (string appId, string instanceId) appInfo = GetInstanceInfoFromSource(cloudEvent.Source);
+            Instance instance = await _altinnApp.GetInstance(appInfo.appId, appInfo.instanceId);
+
+            string instanceGuid = instance.Id.Split("/")[1];
+            string instanceFolder = instance.AppId + "/" + instanceGuid + "/";
+            string instancePath = instanceFolder + instanceGuid;
+            await _storage.SaveBlob(instancePath, JsonSerializer.Serialize(instance));
+            foreach (DataElement data in instance.Data)
+            {
+                ResourceLinks links = data.SelfLinks;
+                using (Stream stream = await _platform.GetBinaryData(links.Platform))
+                {
+                    await _storage.UploadFromStreamAsync(data.BlobStoragePath, stream);
+                }
+            }
+
+            await _queueService.PushToConfirmationQueue(JsonSerializer.Serialize(cloudEvent));
         }
 
         /// <summary>
