@@ -1,0 +1,534 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AltinnApplicationsOwnerSystemFunctions</name>
+    </assembly>
+    <members>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings">
+            <summary>
+            Required configuration for the system
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.AppsBaseUrl">
+            <summary>
+            Base URL for the Apps cluster for the Application Owner this system is set up for. Example for TTD in TT02.  https://ttd.apps.tt02.altinn.no
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.PlatformBaseUrl">
+            <summary>
+            Base URL for the Platform cluster for the environment this ApplicationOwnerSystem is configured for Example: https://platform.tt02.altinn.no/
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.BlobEndpoint">
+            <summary>
+            Endpoint to blob storage
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.AccountName">
+            <summary>
+            Account name for Azure Storage Account
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.AccountKey">
+            <summary>
+            The account key for the Azure Storage Account
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.StorageContainer">
+            <summary>
+            The blob container to store incomming data
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.MaskinportenBaseAddress">
+            <summary>
+            The base adress for Maskinporten in the environment where this Application Owner System is used Example: https://ver2.maskinporten.no
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.MaskinPortenClientId">
+            <summary>
+            The Application Owners Client ID 
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.TestMode">
+            <summary>
+            Testmode. Only relevant for TTD and DIGDIR
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.LocalCertThumbprint">
+            <summary>
+            Thumbprint for when running functions locally
+            </summary>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Config.KeyVaultSettings">
+            <summary>
+            Configuration object used to hold settings for the KeyVault.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.KeyVaultSettings.KeyVaultURI">
+            <summary>
+            Uri to keyvault
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.KeyVaultSettings.MaskinPortenCertSecretId">
+            <summary>
+            Name of the certificate secret
+            </summary>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Config.QueueStorageSettings">
+            <summary>
+            Configuration object used to hold settings for the queue storage.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.QueueStorageSettings.ConnectionString">
+            <summary>
+            ConnectionString for the storage account
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.QueueStorageSettings.InboundQueueName">
+            <summary>
+            Name of the queue to push incomming events to.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.QueueStorageSettings.ConfirmationQueueName">
+            <summary>
+            Name of the queue to push confirmation
+            </summary>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.EventsConfirmation">
+            <summary>
+            Azure Function that confirmes that data for a given instance is downloaded
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsConfirmation.#ctor(AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.EventsConfirmation"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsConfirmation.Run(System.String,Microsoft.Azure.Functions.Worker.FunctionContext)">
+            <summary>
+            Function method that is triggered by new element on events-confirmation queue
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the result of the asynchronous operation.</returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.EventsProcessor">
+            <summary>
+            Azure Function responsible for downloading data for a given instance.
+            Triggered by CloudEvent on Azure Queue
+            When finished it forward CloudEvent to confirmation queue
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsProcessor.#ctor(AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp,AltinnApplicationOwnerSystem.Functions.Services.Interface.IPlatform,AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage,AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.EventsProcessor"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsProcessor.Run(System.String,Microsoft.Azure.Functions.Worker.FunctionContext)">
+            <summary>
+            Reads cloud event from events-inbound queue and download instance and data for that given event and store it to configured azure storage
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsProcessor.GetInstanceInfoFromSource(System.Uri)">
+            <summary>
+            Creates an instance for a given event
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsProcessor.ShouldProcessEvent(AltinnApplicationOwnerSystem.Functions.Models.CloudEvent)">
+            <summary>
+             Will based on configuration decide if the event need to be processed. Todo add logic
+            </summary>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.EventsReceiver">
+            <summary>
+            This function is responsible for receving events from Altinn Events.
+            It will store events in the incomming que for processing by the EventsProcessor
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsReceiver.#ctor(AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService,Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.EventsReceiver"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsReceiver.Run(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,Microsoft.Azure.Functions.Worker.FunctionContext)">
+            <summary>
+            Webhook method to receive CloudEvents from Altinn Platform Events
+            </summary>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Extensions.HttpClientExtension">
+            <summary>
+            This extension is created to make it easy to add a bearer token to a HttpRequests. 
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Extensions.HttpClientExtension.PostAsync(System.Net.Http.HttpClient,System.String,System.String,System.Net.Http.HttpContent)">
+            <summary>
+            Extension that add authorization header to request
+            </summary>
+            <returns>A HttpResponseMessage</returns>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Extensions.HttpClientExtension.GetAsync(System.Net.Http.HttpClient,System.String,System.String)">
+            <summary>
+            Extension that add authorization header to request
+            </summary>
+            <param name="httpClient">The HttpClient</param>
+            <param name="authorizationToken">the authorization token (jwt)</param>
+            <param name="requestUri">The request Uri</param>
+            <returns>A HttpResponseMessage</returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent">
+            <summary>
+            Represents a cloud event. Based on CloudEvent: https://github.com/cloudevents/spec/blob/v1.0/spec.md.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.Id">
+            <summary>
+            Gets or sets the id of the event.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.Source">
+            <summary>
+            Gets or sets the source of the event.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.SpecVersion">
+            <summary>
+            Gets or sets the specification version of the event.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.Type">
+            <summary>
+            Gets or sets the type of the event.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.Subject">
+            <summary>
+            Gets or sets the subject of the event.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.Time">
+            <summary>
+            Gets or sets the time of the event.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.AlternativeSubject">
+            <summary>
+            Gets or sets the alternative subject of the event.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.Data">
+            <summary>
+            Gets or sets the cloudEvent data content. The event payload.
+            The payload depends on the type and the dataschema.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.DataSchema">
+            <summary>
+            Gets or sets the cloudEvent dataschema attribute.
+            A link to the schema that the data attribute adheres to.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.DataContentType">
+            <summary>
+            Gets or sets the cloudEvent datacontenttype attribute.
+            Content type of the data attribute value.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.Serialize">
+            <summary>
+            Serializes the cloud event to a JSON string.
+            </summary>
+            <returns>Serialized cloud event</returns>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Models.CloudEvent.Deserialize(System.String)">
+            <summary>
+            Deserializes the cloud event to a JSON string.
+            </summary>
+            <returns>Cloud event</returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Models.PushQueueReceipt">
+            <summary>
+            Object to hold the receipt for a push queue action.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.PushQueueReceipt.Success">
+            <summary>
+            Boolean to indicate if the push was successful.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Models.PushQueueReceipt.Exception">
+            <summary>
+            Exception. Only populated if the push failed.
+            </summary>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService">
+            <summary>
+            App implementation of the instance service that talks to the given app
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient,AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService.GetInstance(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService.AddCompleteConfirmation(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationClientWrapper">
+            <summary>
+            HttpClient wrapper responsible for calling Altinn Platform Authentication to convert MaskinPorten token to AltinnToken
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationClientWrapper.BaseAddress">
+            <summary>
+            Gets or sets the base address
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationClientWrapper.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationClientWrapper" /> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationClientWrapper.ConvertToken(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationService">
+            <summary>
+            Authentication service responsible for authenticate the application owner system in MaskinPorten and Exchange token to an Altinn token
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationService.#ctor(AltinnApplicationOwnerSystem.Functions.Services.Interface.IKeyVaultService,Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.KeyVaultSettings},Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},AltinnApplicationOwnerSystem.Functions.Services.Interface.IMaskinPortenClientWrapper,AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationClientWrapper,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationService})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationService"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationService.GetAltinnToken">
+            <summary>
+            Creates a altinn token. First login to MaskinPorten and then call altinn to convert to Altinn token.
+            </summary>
+            <returns>The altinn token</returns>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationService.GetJwtAssertion">
+            <summary>
+            Creates the JWT Assertion used to authenticate system in Maskinporten
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.KeyVaultService">
+            <summary>
+            Wrapper implementation for a KeyVaultClient. The wrapped client is created with a principal obtained through configuration.
+            </summary>
+            <remarks>This class is excluded from code coverage because it has no logic to be tested.</remarks>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.KeyVaultService.#ctor(Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.Services.Implementation.KeyVaultService})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.KeyVaultService"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.KeyVaultService.GetCertificateAsync(System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper">
+            <summary>
+            HttpClient wrapper responsible for calling the MaskinPorten endpont to authenticate the Application Owner System
+            </summary>
+        </member>
+        <member name="F:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper._settings">
+            <summary>
+            Application logger 
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper" /> class.
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper.BaseAddress">
+            <summary>
+            Gets or sets the base address
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.MaskinportenClientWrapper.PostToken(System.Net.Http.FormUrlEncodedContent)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformService">
+            <summary>
+            Service that downloads data from platform
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformService.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient,AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformService"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.PlatformService.GetBinaryData(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService">
+            <summary>
+            The queue service that handles actions related to the queue storage.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.QueueStorageSettings},Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService.PushToInboundQueue(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService.PushToConfirmationQueue(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService">
+            <summary>
+            Class that handles integration with Azure Blob Storage.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.SaveBlob(System.String,System.String)">
+            <summary>
+            Saves data in blob storage defined in configuration.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.UploadFromStreamAsync(System.String,System.IO.Stream)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp">
+            <summary>
+            Interface for handling form data related operations
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp.GetInstance(System.String,System.String)">
+            <summary>
+            Gets the instance metadata for a given app
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp.AddCompleteConfirmation(System.String)">
+            <summary>
+            Add complete confirmation.
+            </summary>
+            <remarks>
+            Add to an instance that a given stakeholder considers the instance as no longer needed by them. The stakeholder has
+            collected all the data and information they needed from the instance and expect no additional data to be added to it.
+            The body of the request isn't used for anything despite this being a POST operation.
+            </remarks>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationClientWrapper">
+            <summary>
+            Interface that defines the Authentication service responsible for converting MaskinPorten token to AltinnToken
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationClientWrapper.ConvertToken(System.String)">
+            <summary>
+            Converts MaskinPortenToken to AltinnToken
+            </summary>
+            <returns>A new AltinnToken</returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService">
+            <summary>
+            Interface defining service responsible for the authentication process for Application Owner system
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService.GetAltinnToken">
+            <summary>
+            Methods that return Altinn token. If not cached it will log the solution
+            in to MaskinPorten and then exchange the Maskinporten token to an Altinn token.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IKeyVaultService">
+            <summary>
+            Interface for interacting with key vault
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IKeyVaultService.GetCertificateAsync(System.String,System.String)">
+            <summary>
+            Gets the value of a secret from the given key vault.
+            </summary>
+            <param name="vaultUri">The URI of the key vault to ask for secret. </param>
+            <param name="secretId">The id of the secret.</param>
+            <returns>The secret value.</returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IMaskinPortenClientWrapper">
+            <summary>
+            Interface defining the MaskinPorten Client wrapper responsible for authentication of Application Owner System
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IMaskinPortenClientWrapper.PostToken(System.Net.Http.FormUrlEncodedContent)">
+            <summary>
+            Post MaskinPorten Authentication request
+            </summary>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IPlatform">
+            <summary>
+            Interface for data handling
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IPlatform.GetBinaryData(System.String)">
+            <summary>
+            Gets the data as is.
+            </summary>
+            <param name="dataUri">Uri to the data</param>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService">
+            <summary>
+            Interface to interact with the different queues used by the functions
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService.PushToInboundQueue(System.String)">
+            <summary>
+            Pushes the provided content to the queue
+            </summary>
+            <param name="content">The content to push to the queue in string format</param>
+            <returns>Returns a queue receipt</returns>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService.PushToConfirmationQueue(System.String)">
+            <summary>
+            Pushes the provided content to the queue
+            </summary>
+            <param name="content">The content to push to the queue in string format</param>
+            <returns>Returns a queue receipt</returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage">
+            <summary>
+            Interface for Storage where Application Owner system store received data
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage.SaveBlob(System.String,System.String)">
+            <summary>
+            Saves a specific blob
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage.UploadFromStreamAsync(System.String,System.IO.Stream)">
+            <summary>
+            Saves a stream to blob
+            </summary>
+        </member>
+        <member name="T:AltinnApplicationsOwnerSystem.Functions.Program">
+            <summary>
+            Host program for Azure Function
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationsOwnerSystem.Functions.Program.Main">
+            <summary>
+            Main
+            </summary>
+        </member>
+        <member name="T:AltinnIntegrator.Functions.TelemetryInitializer">
+            <summary>
+            Class that handles initialization of App Insights telemetry.
+            </summary>
+        </member>
+        <member name="M:AltinnIntegrator.Functions.TelemetryInitializer.Initialize(Microsoft.ApplicationInsights.Channel.ITelemetry)">
+            <summary>
+            Initializer.
+            </summary>
+            <param name="telemetry">The telemetry.</param>
+        </member>
+    </members>
+</doc>
