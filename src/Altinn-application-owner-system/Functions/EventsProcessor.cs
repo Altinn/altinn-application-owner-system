@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -49,8 +50,8 @@ namespace AltinnApplicationOwnerSystem.Functions
             CloudEvent cloudEvent = System.Text.Json.JsonSerializer.Deserialize<CloudEvent>(item);
             if (ShouldProcessEvent(cloudEvent))
             {
-                Instance instance = CreateInstanceFromSource(cloudEvent);
-                instance = await _altinnApp.GetInstance(instance.AppId, instance.Id);
+                (string appId, string instanceId) appInfo = GetInstanceInfoFromSource(cloudEvent.Source);
+                Instance instance = await _altinnApp.GetInstance(appInfo.appId, appInfo.instanceId);
 
                 string instanceGuid = instance.Id.Split("/")[1];
                 string instancePath = instance.AppId + "/" + instanceGuid + "/" + instanceGuid;
@@ -71,15 +72,11 @@ namespace AltinnApplicationOwnerSystem.Functions
         /// <summary>
         /// Creates an instance for a given event
         /// </summary>
-        private Instance CreateInstanceFromSource(CloudEvent cloudEvent)
+        private (string, string) GetInstanceInfoFromSource(Uri eventUri)
         {
-            Instance instance = new Instance();
-            string[] parts = cloudEvent.Source.PathAndQuery.Split("/");
-            instance.AppId = $"{parts[1]}/{parts[2]}";
-            instance.Org = $"{parts[1]}";
-            instance.InstanceOwner = new InstanceOwner() { PartyId = parts[4] };
-            instance.Id = $"{parts[4]}/{parts[5]}";
-            return instance;
+            string[] parts = eventUri.Segments;
+            (string appId, string instanceId) appInfo = ($"{parts[1]}/{parts[2]}", $"{parts[4]}/{parts[5]}");
+            return appInfo;
         }
 
         /// <summary>

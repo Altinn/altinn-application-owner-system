@@ -38,8 +38,7 @@ namespace AltinnApplicationOwnerSystem.Functions
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequestData req,
             FunctionContext executionContext)
         {
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            CloudEvent cloudEvent = JsonSerializer.Deserialize<CloudEvent>(requestBody);
+            CloudEvent cloudEvent = await JsonSerializer.DeserializeAsync<CloudEvent>(req.Body);
 
             await _queueService.PushToInboundQueue(JsonSerializer.Serialize(cloudEvent));
 

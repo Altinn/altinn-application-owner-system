@@ -57,7 +57,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 
             if (response.IsSuccessStatusCode)
             {
-                token = response.Content.ReadAsStringAsync().Result;
+                token = await response.Content.ReadAsStringAsync();
                 return token;
             }
             else

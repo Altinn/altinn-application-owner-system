@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace AltinnApplicationOwnerSystem.Functions.Services.Interface
 {
@@ -13,7 +10,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Interface
         /// <summary>
         /// Converts MaskinPortenToken to AltinnToken
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A new AltinnToken</returns>
         Task<string> ConvertToken(string maskinportenToken);
     }
 }

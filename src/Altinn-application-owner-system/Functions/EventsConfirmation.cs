@@ -1,9 +1,8 @@
+using System.Text.Json;
 using System.Threading.Tasks;
 using AltinnApplicationOwnerSystem.Functions.Models;
 using AltinnApplicationOwnerSystem.Functions.Services.Interface;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
 
 namespace AltinnApplicationOwnerSystem.Functions
 {
@@ -23,13 +22,13 @@ namespace AltinnApplicationOwnerSystem.Functions
         }
 
         /// <summary>
-        /// Function method that is triggered
+        /// Function method that is triggered by new element on events-confirmation queue
         /// </summary>
         /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
         [Function("EventsConfirmation")]
         public async Task Run([QueueTrigger("events-confirmation", Connection = "QueueStorageSettings:ConnectionString")]string item, FunctionContext executionContext)
         {
-            CloudEvent cloudEvent = System.Text.Json.JsonSerializer.Deserialize<CloudEvent>(item);
+            CloudEvent cloudEvent = JsonSerializer.Deserialize<CloudEvent>(item);
 
             await _altinnApp.AddCompleteConfirmation(cloudEvent.Source.AbsoluteUri);
         }

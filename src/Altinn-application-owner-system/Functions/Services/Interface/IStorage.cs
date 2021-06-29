@@ -11,11 +11,11 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Interface
         /// <summary>
         /// Saves a specific blob
         /// </summary>
-        public Task SaveBlob(string name, string data);
+        Task SaveBlob(string name, string data);
 
         /// <summary>
         /// Saves a stream to blob
         /// </summary>
-        public Task<long> UploadFromStreamAsync(string name, Stream stream);
+        Task<long> UploadFromStreamAsync(string name, Stream stream);
     }
 }

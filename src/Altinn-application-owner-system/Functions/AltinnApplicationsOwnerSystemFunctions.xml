@@ -106,7 +106,7 @@
         </member>
         <member name="M:AltinnApplicationOwnerSystem.Functions.EventsConfirmation.Run(System.String,Microsoft.Azure.Functions.Worker.FunctionContext)">
             <summary>
-            Function method that is triggered
+            Function method that is triggered by new element on events-confirmation queue
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the result of the asynchronous operation.</returns>
         </member>
@@ -127,7 +127,7 @@
             Reads cloud event from events-inbound queue and download instance and data for that given event and store it to configured azure storage
             </summary>
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsProcessor.CreateInstanceFromSource(AltinnApplicationOwnerSystem.Functions.Models.CloudEvent)">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsProcessor.GetInstanceInfoFromSource(System.Uri)">
             <summary>
             Creates an instance for a given event
             </summary>
@@ -427,7 +427,7 @@
             <summary>
             Converts MaskinPortenToken to AltinnToken
             </summary>
-            <returns></returns>
+            <returns>A new AltinnToken</returns>
         </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService">
             <summary>
@@ -477,7 +477,7 @@
         </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService">
             <summary>
-            Interface to interact with the queue
+            Interface to interact with the different queues used by the functions
             </summary>
         </member>
         <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService.PushToInboundQueue(System.String)">

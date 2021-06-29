@@ -101,7 +101,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             X509Certificate2 cert = null;
             if (!string.IsNullOrEmpty(_altinnIntegratorSettings.LocalCertThumbprint))
             {
-               cert = GetCertificateFromKeyStore("111bd85e12ef3dce6ec7b2c0011d4e9cbc4f896f", StoreName.My, StoreLocation.LocalMachine);
+               cert = GetCertificateFromKeyStore(_altinnIntegratorSettings.LocalCertThumbprint, StoreName.My, StoreLocation.LocalMachine);
             }
             else
             {
@@ -118,8 +118,8 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 
             JwtPayload payload = new JwtPayload
             {
-                { "aud", "https://ver2.maskinporten.no/" },
-                { "resource", "https://tt02.altinn.no/maskinporten-api/" },
+                { "aud", _altinnIntegratorSettings.MaskinportenBaseAddress},
+                { "resource", _altinnIntegratorSettings.PlatformBaseUrl + "/maskinporten-api/" },
                 { "scope", "altinn:serviceowner/instances.read altinn:serviceowner/instances.write" },
                 { "iss", clientId },
                 { "exp", dateTimeOffset.ToUnixTimeSeconds() + 10 },
