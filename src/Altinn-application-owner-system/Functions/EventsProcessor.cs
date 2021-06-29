@@ -79,7 +79,7 @@ namespace AltinnApplicationOwnerSystem.Functions
         private (string, string) GetInstanceInfoFromSource(Uri eventUri)
         {
             string[] parts = eventUri.Segments;
-            (string appId, string instanceId) appInfo = ($"{parts[1]}/{parts[2]}", $"{parts[4]}/{parts[5]}");
+            (string appId, string instanceId) appInfo = ($"{parts[1]}{parts[2]}", $"{parts[4]}{parts[5]}");
             return appInfo;
         }
 

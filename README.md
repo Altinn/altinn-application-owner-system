@@ -22,15 +22,26 @@ It will put the received Event in a Queue based on Azure Queue Storage
 Events processor is responsible to
 
 - Download Instance document
-- Download all data
+- Download all data and store to Azure Storage Account
 
 Put event on the confirmation queue
 
 ### Events Confirmation
 
+- Calls App to confirm that data is downloaded
 
-## Authetication
+## Authentication
 
-The system uses Maskinporten to authenticate the application owner and 
+The system uses Maskinporten to authenticate the application owner
 
 ## Configuration
+
+As part of this project you find a PowerShell script to deploy
+
+### Prerequistes
+- Org is registred with a client in maskinporten and you have the clientId
+- You have the certificate for that client with password
+- The client is an application owner in Altinn
+
+From deployment folder run in Powershell. Replace values matching your environment
+Example: #  .\provision_application_owner_system.ps1 -subscription Altinn-TTD-Application-Owner-System -aosEnvironment [INSERT NAME ON ENVIRONMENT MAX 5 letters] -maskinportenclient [INSERT MASKINPORTEN CLIENTID] -maskinportenclientcert [PATH TO CERT] -maskinportenclientcertpwd [INSERT PASSOWORD FOR CERT] -maskinportenuri https://ver2.maskinporten.no -platformuri https://platform.tt02.altinn.no/ -appsuri https://ttd.apps.tt02.altinn.no/

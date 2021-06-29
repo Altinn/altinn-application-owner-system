@@ -2,6 +2,7 @@
 # AZ CLI
 # HELM 3
 # AZ Login
+# azure-functions-core-tools https://www.npmjs.com/package/azure-functions-core-tools
 # az extension add -n application-insights #Add support for Application Insight for AzureCLI
 #
 
