@@ -119,7 +119,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             JwtPayload payload = new JwtPayload
             {
                 { "aud", _altinnIntegratorSettings.MaskinportenBaseAddress },
-                { "resource", _altinnIntegratorSettings.PlatformBaseUrl + "/maskinporten-api/" },
+                { "resource", "https://tt02.altinn.no/maskinporten-api/" },
                 { "scope", "altinn:serviceowner/instances.read altinn:serviceowner/instances.write" },
                 { "iss", clientId },
                 { "exp", dateTimeOffset.ToUnixTimeSeconds() + 10 },
