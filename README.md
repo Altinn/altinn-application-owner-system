@@ -5,10 +5,10 @@ A reference implementation of a system for app owners, that can react to events,
 
 The system is implemented as Azure Functions using .Net 5
 
-- It uses Azure Functions to receive, process and confirm receival of data
+- It uses Azure Functions to receive, process, and confirm downloading of data
 - It uses Azure Queue Storage for async processing
 - It uses Azure Blob Storage to store data.
-- It uses Azure KeyVault to store certificate
+- It uses Azure KeyVault to store the certificate for [MaskinPorten](https://www.digdir.no/digitale-felleslosninger/maskinporten/869)
 
 ![Altinn Application Owner System](concept.svg "Altinn Application Owner System")
 
@@ -18,7 +18,7 @@ The events receiver is a webhook that receives events from Altinn Events.
 
 It will put the received Event in a Queue based on Azure Queue Storage.
 
-The function is protected by an [Function Access Key](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook-trigger?tabs=csharp#authorization-keys) . This need to be present in URI in requests from Altinn events. 
+The function is protected by a [Function Access Key](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook-trigger?tabs=csharp#authorization-keys). This needs to be present in URI in requests from Altinn events. 
 
 The endpoint for subscription needs to include it. 
 Example: https://aos-ttdt22-function.azurewebsites.net/api/eventsreceiver?code=ffQqMrbvLoNEiySae0EfApmost8LfBeqdYY/AXa13KSyf8Rjsp1U9w==
@@ -30,9 +30,9 @@ Azure creates the code when setting up the functions.
 Events processor is responsible to
 
 - Download Instance document
-- Download all data and store to Azure Storage Account
+- Download all data and store it as blobs in an Azure Storage Account
 
-Put event on the confirmation queue
+Put events on the confirmation queue
 
 ### Events Confirmation
 
@@ -42,14 +42,16 @@ Put event on the confirmation queue
 
 The system uses Maskinporten to authenticate the application owner.
 
-- The org needs to be registrated as a client 
+- The org needs to be registered as a client 
 
 ## Configuration
 
-As part of this project you find a PowerShell script to deploy
+As part of this project, you find a PowerShell script to deploy the solution to an Azure Subscription
 
 ### Prerequisites
-- Org is registred with a client in maskinporten and you have the clientId
+
+- You have an Azure subscription that you can log in to and create resources
+- Org is registred with a client in MaskinPorten and you have the clientId
 - You have the certificate for that client with password
 - The client is an application owner in Altinn
 
