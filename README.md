@@ -16,9 +16,9 @@ The events receiver is a webhook that receives events from Altinn Events.
 
 It will put the received Event in a Queue based on Azure Queue Storage.
 
-The function is protected by a Azure Function code. This need to be present in URI in requests from Altinn events
+The function is protected by an [Function Access Key](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook-trigger?tabs=csharp#authorization-keys) . This need to be present in URI in requests from Altinn events. 
 
-The endpoint for subscription need to include it. 
+The endpoint for subscription needs to include it. 
 Example: https://aos-ttdt22-function.azurewebsites.net/api/eventsreceiver?code=ffQqMrbvLoNEiySae0EfApmost8LfBeqdYY/AXa13KSyf8Rjsp1U9w==
 
 Azure creates the code when setting up the functions.
@@ -38,13 +38,15 @@ Put event on the confirmation queue
 
 ## Authentication
 
-The system uses Maskinporten to authenticate the application owner
+The system uses Maskinporten to authenticate the application owner.
+
+- The org needs to be registrated as a client 
 
 ## Configuration
 
 As part of this project you find a PowerShell script to deploy
 
-### Prerequistes
+### Prerequisites
 - Org is registred with a client in maskinporten and you have the clientId
 - You have the certificate for that client with password
 - The client is an application owner in Altinn
