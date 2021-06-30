@@ -1,17 +1,16 @@
 # Application Owner System
 A reference implementation of a system for app owners, that can react to events, fetch data and update app status.
 
-
-
 ## Architecture
 
 The system is implemented as Azure Functions using .Net 5
 
-It uses Azure Blob Storage to store data.
-
+- It uses Azure Functions to receive, process and confirm receival of data
+- It uses Azure Queue Storage for async processing
+- It uses Azure Blob Storage to store data.
+- It uses Azure KeyVault to store certificate
 
 ![Altinn Application Owner System](concept.svg "Altinn Application Owner System")
-
 
 ### Events Receiver
 
@@ -60,3 +59,19 @@ Example: #
    ```bash
 .\provision_application_owner_system.ps1 -subscription Altinn-TTD-Application-Owner-System -aosEnvironment [INSERT NAME ON ENVIRONMENT MAX 5 letters] -maskinportenclient [INSERT MASKINPORTEN CLIENTID] -maskinportenclientcert [PATH TO CERT] -maskinportenclientcertpwd [INSERT PASSOWORD FOR CERT] -maskinportenuri https://ver2.maskinporten.no -platformuri https://platform.tt02.altinn.no/ -appsuri https://ttd.apps.tt02.altinn.no/
    ```
+
+
+### Setting up a subscription
+
+Below you see and example on how an subscription is set up. This need to be posted to the subscription endpoint while authenticated as org.
+
+See more details on [Subscription API](https://docs.altinn.studio/teknologi/altinnstudio/altinn-api/platform-api/events/)
+
+```json
+{
+    "endPoint": "https://aos-ttdtt02-function.azurewebsites.net/api/eventsreceiver?code=swEizasdgraeadvcvvwFAKE8y9ZS7bDoZNOTREALLuPeJMkUtHow==",
+    "sourceFilter": "https://ttd.apps.tt02.altinn.no/ttd/apps-test",
+    "typeFilter": "app.instance.process.completed",
+   }
+
+ ```
