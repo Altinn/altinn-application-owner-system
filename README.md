@@ -10,6 +10,9 @@ The system is implemented as Azure Functions using .Net 5
 It uses Azure Blob Storage to store data.
 
 
+![Altinn Application Owner System](concept.svg "Altinn Application Owner System")
+
+
 ### Events Receiver
 
 The events receiver is a webhook that receives events from Altinn Events.
@@ -52,4 +55,8 @@ As part of this project you find a PowerShell script to deploy
 - The client is an application owner in Altinn
 
 From deployment folder run in Powershell. Replace values matching your environment
-Example: #  .\provision_application_owner_system.ps1 -subscription Altinn-TTD-Application-Owner-System -aosEnvironment [INSERT NAME ON ENVIRONMENT MAX 5 letters] -maskinportenclient [INSERT MASKINPORTEN CLIENTID] -maskinportenclientcert [PATH TO CERT] -maskinportenclientcertpwd [INSERT PASSOWORD FOR CERT] -maskinportenuri https://ver2.maskinporten.no -platformuri https://platform.tt02.altinn.no/ -appsuri https://ttd.apps.tt02.altinn.no/
+Example: #  
+
+   ```bash
+.\provision_application_owner_system.ps1 -subscription Altinn-TTD-Application-Owner-System -aosEnvironment [INSERT NAME ON ENVIRONMENT MAX 5 letters] -maskinportenclient [INSERT MASKINPORTEN CLIENTID] -maskinportenclientcert [PATH TO CERT] -maskinportenclientcertpwd [INSERT PASSOWORD FOR CERT] -maskinportenuri https://ver2.maskinporten.no -platformuri https://platform.tt02.altinn.no/ -appsuri https://ttd.apps.tt02.altinn.no/
+   ```
