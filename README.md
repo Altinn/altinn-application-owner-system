@@ -77,3 +77,12 @@ See more details on [Subscription API](https://docs.altinn.studio/teknologi/alti
    }
 
  ```
+
+### Altinn 3 documentation
+
+![Altinn 3 concept](https://docs.altinn.studio/teknologi/altinnstudio/about/concept3.svg "Altinn 3 concept")
+
+Here you find relevant information.
+- [Altinn 3 documentation](https://docs.altinn.studio/teknologi/altinnstudio/)
+- [Altinn 3 API](https://docs.altinn.studio/teknologi/altinnstudio/altinn-api/)
+- [Altinn 3 Event capabilities](https://docs.altinn.studio/teknologi/altinnstudio/architecture/capabilities/runtime/integration/events/)
