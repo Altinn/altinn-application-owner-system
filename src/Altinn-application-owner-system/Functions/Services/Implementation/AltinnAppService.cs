@@ -118,7 +118,6 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 
         private string GenerateFeedbackXML(string instanceId)
         {
-            // xmlns=\"http://altinn.no/services/ws/schemas/ServiceEngine/InstanceData/1.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://altinn.no/services/ws/schemas/ServiceEngine/InstanceData/1.0 http://altinn.no/services/ws/schemas/ServiceEngine/InstanceData/1.0/InstanceData.xsd\"
             string xml = $"<feedback>" +
                 $"<instanceId>{instanceId}</instanceId>" +
                 $"<feedbackText>This is a feedback</feedbackText>" +
