@@ -42,6 +42,7 @@ namespace AltinnApplicationsOwnerSystem.Functions
                     s.AddSingleton<IAuthenticationService, AuthenticationService>();
                     s.AddSingleton<IQueueService, QueueService>();
                     s.AddSingleton<IStorage, StorageService>();
+                    s.AddHttpClient<ISubscription, SubscriptionService>();
                     s.AddHttpClient<IAltinnApp, AltinnAppService>();
                     s.AddHttpClient<IPlatform, PlatformService>();
                     s.AddHttpClient<IAuthenticationClientWrapper, AuthenticationClientWrapper>();

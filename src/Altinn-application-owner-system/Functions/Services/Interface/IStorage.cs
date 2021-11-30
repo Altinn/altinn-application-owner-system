@@ -17,5 +17,15 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Interface
         /// Saves a stream to blob
         /// </summary>
         Task<long> UploadFromStreamAsync(string name, Stream stream);
+
+        /// <summary>
+        /// Save registered subscription information
+        /// </summary>
+        Task SaveRegisteredSubscription(string name, Subscription subscription);
+
+        /// <summary>
+        /// Delete blob from container
+        /// </summary>
+        Task DeleteBlobFromContainer(string name, string container);
     }
 }

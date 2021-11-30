@@ -21,5 +21,12 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Interface
         /// <param name="content">The content to push to the queue in string format</param>
         /// <returns>Returns a queue receipt</returns>
         Task<PushQueueReceipt> PushToConfirmationQueue(string content);
+
+        /// <summary>
+        /// Pushes the provided content to the feedback queue
+        /// </summary>
+        /// <param name="content">The content to push to the queue in string format</param>
+        /// <returns>Returns a queue receipt</returns>
+        Task<PushQueueReceipt> PushToFeedbackQueue(string content);
     }
 }

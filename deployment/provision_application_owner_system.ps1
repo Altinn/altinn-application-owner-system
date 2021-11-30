@@ -19,16 +19,17 @@ param (
   [Parameter(Mandatory=$True)][string]$maskinportenuri, 
   [Parameter(Mandatory=$True)][string]$appsuri, 
   [Parameter(Mandatory=$True)][string]$platformuri, 
-  [string]$location = "norwayeast" 
+  [string]$location = "norwayeast",
+  [string]$resourcePrefix = "aos"
 )
 
 ### Set subscription
 az account set --subscription $subscription
 
-$aosResourceGroupName = "aos-$aosEnvironment-rg"
-$keyvaultname = "aos-$aosEnvironment-keyvault" 
-$storageAccountName = "aos"+$aosEnvironment+"storage"
-$functionName = "aos-$aosEnvironment-function" 
+$aosResourceGroupName = "$resourcePrefix-$aosEnvironment-rg"
+$keyvaultname = "$resourcePrefix-$aosEnvironment-keyvault" 
+$storageAccountName = $resourcePrefix+$aosEnvironment+"storage"
+$functionName = "$resourcePrefix-$aosEnvironment-function" 
 
 
 #### Check if resource group for AKS exists
@@ -42,6 +43,9 @@ $storageAccount = az storage account create -n $storageAccountName -g $aosResour
 $StorageID = az storage account show --name $storageAccountName --resource-group $aosResourceGroupName --query id --output tsv
 $storageAccountAccountKey = az storage account keys list --account-name $storageAccountName --query [0].value -o tsv
 az storage container create -n inbound --account-name $storageAccountName --account-key $storageAccountAccountKey --public-access off
+az storage container create -n active-subscriptions --account-name $storageAccountName --account-key $storageAccountAccountKey --public-access off
+az storage container create -n add-subscriptions --account-name $storageAccountName --account-key $storageAccountAccountKey --public-access off
+az storage container create -n remove-subscriptions --account-name $storageAccountName --account-key $storageAccountAccountKey --public-access off
 $storageConnectionString = az storage account show-connection-string -g $aosResourceGroupName -n $storageAccountName --query connectionString --output tsv
 $blobendpoint = az storage account show --name $storageAccountName --resource-group $aosResourceGroupName --query primaryEndpoints.blob --output tsv
 

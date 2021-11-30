@@ -24,6 +24,18 @@ namespace AltinnApplicationOwnerSystem.Functions.Extensions
         /// <summary>
         /// Extension that add authorization header to request
         /// </summary>
+        /// <returns>A HttpResponseMessage</returns>
+        public static Task<HttpResponseMessage> PutAsync(this HttpClient httpClient, string authorizationToken, string requestUri, HttpContent content)
+        {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            request.Headers.Add("Authorization", "Bearer " + authorizationToken);
+            request.Content = content;
+            return httpClient.SendAsync(request, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Extension that add authorization header to request
+        /// </summary>
         /// <param name="httpClient">The HttpClient</param>
         /// <param name="authorizationToken">the authorization token (jwt)</param>
         /// <param name="requestUri">The request Uri</param>
@@ -31,6 +43,20 @@ namespace AltinnApplicationOwnerSystem.Functions.Extensions
         public static Task<HttpResponseMessage> GetAsync(this HttpClient httpClient, string authorizationToken, string requestUri)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            request.Headers.Add("Authorization", "Bearer " + authorizationToken);
+            return httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Extension that add authorization header to request
+        /// </summary>
+        /// <param name="httpClient">The HttpClient</param>
+        /// <param name="authorizationToken">the authorization token (jwt)</param>
+        /// <param name="requestUri">The request Uri</param>
+        /// <returns>A HttpResponseMessage</returns>
+        public static Task<HttpResponseMessage> DeleteAsync(this HttpClient httpClient, string authorizationToken, string requestUri)
+        {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, requestUri);
             request.Headers.Add("Authorization", "Bearer " + authorizationToken);
             return httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
         }

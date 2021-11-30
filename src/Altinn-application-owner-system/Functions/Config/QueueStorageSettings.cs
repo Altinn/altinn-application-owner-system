@@ -19,5 +19,10 @@ namespace AltinnApplicationOwnerSystem.Functions.Config
         /// Name of the queue to push confirmation
         /// </summary>
         public string ConfirmationQueueName { get; set; } = "events-confirmation";
+
+        /// <summary>
+        /// Name of the queue to push feedback
+        /// </summary>
+        public string FeedbackQueueName { get; set; } = "events-feedback";
     }
 }

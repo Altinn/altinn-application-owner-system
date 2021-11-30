@@ -26,6 +26,8 @@ namespace AltinnApplicationOwnerSystem.Functions
 
         private readonly IQueueService _queueService;
 
+        private static ILogger _logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EventsProcessor"/> class.
         /// </summary>
@@ -33,19 +35,21 @@ namespace AltinnApplicationOwnerSystem.Functions
             IAltinnApp altinnApp, 
             IPlatform platform, 
             IStorage storage,
-            IQueueService queueService)
+            IQueueService queueService,
+            ILogger<EventsProcessor> logger)
         {
             _altinnApp = altinnApp;
             _platform = platform;
             _storage = storage;
             _queueService = queueService;
+            _logger = logger;
         }
 
         /// <summary>
         /// Reads cloud event from events-inbound queue and download instance and data for that given event and store it to configured azure storage
         /// </summary>
         [Function(nameof(EventsProcessor))]
-        public async Task Run([QueueTrigger("events-inbound", Connection = "QueueStorageSettings:ConnectionString")] string item, FunctionContext executionContext)
+        public async Task Run([Microsoft.Azure.Functions.Worker.QueueTrigger("events-inbound", Connection = "QueueStorageSettings:ConnectionString")] string item, FunctionContext executionContext)
         {
             CloudEvent cloudEvent = System.Text.Json.JsonSerializer.Deserialize<CloudEvent>(item);
             
@@ -70,7 +74,7 @@ namespace AltinnApplicationOwnerSystem.Functions
                 }
             }
 
-            await _queueService.PushToConfirmationQueue(JsonSerializer.Serialize(cloudEvent));
+            await _queueService.PushToFeedbackQueue(JsonSerializer.Serialize(cloudEvent));
         }
 
         /// <summary>
@@ -88,6 +92,11 @@ namespace AltinnApplicationOwnerSystem.Functions
         /// </summary>
         private bool ShouldProcessEvent(CloudEvent cloudEvent)
         {
+            if (cloudEvent.Type == "platform.events.validatesubscription") 
+            {
+                return false;
+            }
+
             return true;
         }
     }
