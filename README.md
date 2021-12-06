@@ -32,11 +32,42 @@ Events processor is responsible to
 - Download Instance document
 - Download all data and store it as blobs in an Azure Storage Account
 
-Put events on the confirmation queue
+Put events on the feedback queue
+
+### Events Feedback
+
+Events feedback is responsible for
+
+- Upload xml feedback to a datafield controlled by the setting: AltinnApplicationOwnerSystemSettings:XMLFeedbackDataType
+- Put events on the confirmation queue
+
+In addition to configure the XMLFeedbackDataType you also need to specify the type of events that should trigger upload of feedback. Controlled with the setting: AltinnApplicationOwnerSystemSettings:XMLFeedbackEventType
 
 ### Events Confirmation
 
-- Calls App to confirm that data is downloaded
+- Calls App to confirm that data is downloaded (and feedback uploaded if configured)
+
+### Events Subscriber
+
+Events subscriber is triggered when a file is uploaded to the blob container add-subscriptions
+
+Events subscriber is responsible for:
+
+- Authenticate with maskinporten to altinn3 and register the subscription uploaded
+- Saving the response from altinn3 to the blob container active-subscriptions
+- Deleting the uploaded file in add-subscriptions
+
+### Events DeSubscriber
+
+Events desubscriber is triggered when a file is uploaded to the blob container: remove-subscriptions
+
+The simplest way to get the json to upload is to download it form the blob container: active-subscriptions 
+
+Events Desubscriber is responsible for:
+
+- Authenticate with maskinporten to altinn3 and remove the subscription uploaded
+- Removing the file describing the subscription in active-subscriptions
+- Deleteing the uploaded file in remove-subscriptions
 
 ## Authentication
 

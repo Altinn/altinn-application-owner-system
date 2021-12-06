@@ -23,6 +23,8 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
 
         private QueueClient _confirmationQueueClient;
 
+        private QueueClient _feedbackQueueClient;
+
         private readonly ILogger _logger;
 
         /// <summary>
@@ -66,6 +68,22 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             return new PushQueueReceipt { Success = true };
         }
 
+        /// <inheritdoc/>
+        public async Task<PushQueueReceipt> PushToFeedbackQueue(string content)
+        {
+            try
+            {
+                QueueClient client = await GetFeedbackQueueClient();
+                await client.SendMessageAsync(Convert.ToBase64String(Encoding.UTF8.GetBytes(content)));
+            }
+            catch (Exception e)
+            {
+                return new PushQueueReceipt { Success = false, Exception = e };
+            }
+            
+            return new PushQueueReceipt { Success = true };
+        }
+
         private async Task<QueueClient> GetInboundQueueClient()
         {
             if (_inboundQueueClient == null)
@@ -86,6 +104,17 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             }
 
             return _confirmationQueueClient;
+        }
+
+        private async Task<QueueClient> GetFeedbackQueueClient()
+        {
+            if (_feedbackQueueClient == null)
+            {
+                _feedbackQueueClient = new QueueClient(_settings.ConnectionString, _settings.FeedbackQueueName);
+                await _feedbackQueueClient.CreateIfNotExistsAsync();
+            }
+            
+            return _feedbackQueueClient;
         }
     }
 }

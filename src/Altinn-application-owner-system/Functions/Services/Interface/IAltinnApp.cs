@@ -24,5 +24,13 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Interface
         /// The body of the request isn't used for anything despite this being a POST operation.
         /// </remarks>
         Task<Instance> AddCompleteConfirmation(string instanceUri);
+
+        /// <summary>
+        /// Add feedback.
+        /// </summary>
+        /// <remarks>
+        /// Add feedback to an instance.
+        /// </remarks>
+        Task<Instance> AddXMLFeedback(string instanceUri, string instanceId, string eventType);
     }
 }

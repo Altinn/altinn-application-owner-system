@@ -40,6 +40,11 @@ namespace AltinnApplicationOwnerSystem.Functions.Config
         public string StorageContainer { get; set; } = "inbound";
 
         /// <summary>
+        /// The blob container where registered subscription info are stored
+        /// </summary>
+        public string RegisteredSubStorageContainer { get; set; } = "active-subscriptions";
+
+        /// <summary>
         /// The base adress for Maskinporten in the environment where this Application Owner System is used Example: https://ver2.maskinporten.no
         /// </summary>
         public string MaskinportenBaseAddress { get; set; }
@@ -58,5 +63,15 @@ namespace AltinnApplicationOwnerSystem.Functions.Config
         /// Thumbprint for when running functions locally
         /// </summary>
         public string LocalCertThumbprint { get; set; }
+
+        /// <summary>
+        /// Datatype for xml feedback. If not set no feedback is generated
+        /// </summary>
+        public string XMLFeedbackDataType { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Eventtype to generate xml feedback for
+        /// </summary>
+        public string XMLFeedbackEventType { get; set; } = string.Empty;
     }
 }

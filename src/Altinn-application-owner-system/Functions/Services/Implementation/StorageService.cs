@@ -13,7 +13,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
     /// <summary>
     /// Class that handles integration with Azure Blob Storage.
     /// </summary>
-    public class StorageService: IStorage
+    public class StorageService : IStorage
     {
         private readonly AltinnApplicationOwnerSystemSettings _settings;
 
@@ -23,6 +23,19 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
         public StorageService(IOptions<AltinnApplicationOwnerSystemSettings> altinnIntegratorSettings)
         {
             _settings = altinnIntegratorSettings.Value;
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteBlobFromContainer(string name, string container)
+        {
+            BlobClient client;
+
+            StorageSharedKeyCredential storageCredentials = new StorageSharedKeyCredential(_settings.AccountName, _settings.AccountKey);
+            BlobServiceClient serviceClient = new BlobServiceClient(new Uri(_settings.BlobEndpoint), storageCredentials);
+            BlobContainerClient blobContainerClient = serviceClient.GetBlobContainerClient(container);
+            client = blobContainerClient.GetBlobClient(name);
+
+            await client.DeleteIfExistsAsync();
         }
 
         /// <summary>
@@ -37,10 +50,30 @@ namespace AltinnApplicationOwnerSystem.Functions.Services.Implementation
             BlobContainerClient blobContainerClient = serviceClient.GetBlobContainerClient(_settings.StorageContainer);
 
             client = blobContainerClient.GetBlobClient(name);
-            
+
             Stream stream = new MemoryStream();
             StreamWriter writer = new StreamWriter(stream);
             writer.Write(data);
+            writer.Flush();
+            stream.Position = 0;
+            await client.UploadAsync(stream, true);
+            stream.Dispose();
+        }
+
+        /// <inheritdoc />
+        public async Task SaveRegisteredSubscription(string name, Subscription subscription)
+        {
+            BlobClient client;
+
+            StorageSharedKeyCredential storageCredentials = new StorageSharedKeyCredential(_settings.AccountName, _settings.AccountKey);
+            BlobServiceClient serviceClient = new BlobServiceClient(new Uri(_settings.BlobEndpoint), storageCredentials);
+            BlobContainerClient blobContainerClient = serviceClient.GetBlobContainerClient(_settings.RegisteredSubStorageContainer);
+
+            client = blobContainerClient.GetBlobClient(name);
+
+            Stream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(subscription.ToJson());
             writer.Flush();
             stream.Position = 0;
             await client.UploadAsync(stream, true);
