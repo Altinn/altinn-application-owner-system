@@ -79,7 +79,7 @@ namespace AltinnApplicationOwnerSystem.Functions.Models
         /// <returns>Serialized cloud event</returns>
         public string Serialize()
         {
-            return JsonSerializer.Serialize(this, new JsonSerializerOptions { IgnoreNullValues = true });
+            return JsonSerializer.Serialize(this, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull });
         }
 
         /// <summary>
