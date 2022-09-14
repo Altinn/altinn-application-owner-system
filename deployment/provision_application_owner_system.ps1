@@ -80,7 +80,7 @@ az functionapp config appsettings set --name $functionname --resource-group $aos
 az functionapp config appsettings set --name $functionname --resource-group $aosResourceGroupName --settings "KeyVault:KeyVaultURI=$vaultUri"
 
 
-Write-Output "Set config"
+Write-Output "Publish app"
 Set-Location ..\src\Altinn-application-owner-system\Functions
-func azure functionapp publish $functionName
+func azure functionapp publish $functionName --force
 Set-Location ..\..\..\deployment
