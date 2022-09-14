@@ -60,7 +60,7 @@ Write-Output "Import Maskinporten cert"
 az keyvault certificate import --vault-name $keyvaultname -n maskinportenclientcert -f $maskinportenclientcert --password $maskinportenclientcertpwd
 
 Write-Output "Create Function App"
-az functionapp create --resource-group $aosResourceGroupName --consumption-plan-location $location --runtime dotnet-isolated --functions-version 4 --name $functionName --storage-account $storageAccountName
+az functionapp create --resource-group $aosResourceGroupName --consumption-plan-location $location --runtime dotnet --functions-version 4 --name $functionName --storage-account $storageAccountName
 az functionapp identity assign -g $aosResourceGroupName -n $functionName
 $funcprincialId = az functionapp identity show --name $functionName --resource-group $aosResourceGroupName --query principalId  --output tsv
 
