@@ -11,14 +11,14 @@
 
 
 param (
-  [Parameter(Mandatory=$True)][string]$subscription,   
-  [Parameter(Mandatory=$True)][string]$aosEnvironment, 
-  [Parameter(Mandatory=$True)][string]$maskinportenclient, 
-  [Parameter(Mandatory=$True)][string]$maskinportenclientcert, 
+  [Parameter(Mandatory=$True)][string]$subscription,
+  [Parameter(Mandatory=$True)][string]$aosEnvironment,
+  [Parameter(Mandatory=$True)][string]$maskinportenclient,
+  [Parameter(Mandatory=$True)][string]$maskinportenclientcert,
   [Parameter(Mandatory=$True)][string]$maskinportenclientcertpwd,
-  [Parameter(Mandatory=$True)][string]$maskinportenuri, 
-  [Parameter(Mandatory=$True)][string]$appsuri, 
-  [Parameter(Mandatory=$True)][string]$platformuri, 
+  [Parameter(Mandatory=$True)][string]$maskinportenuri,
+  [Parameter(Mandatory=$True)][string]$appsuri,
+  [Parameter(Mandatory=$True)][string]$platformuri,
   [string]$location = "norwayeast",
   [string]$resourcePrefix = "aos"
 )
@@ -27,9 +27,9 @@ param (
 az account set --subscription $subscription
 
 $aosResourceGroupName = "$resourcePrefix-$aosEnvironment-rg"
-$keyvaultname = "$resourcePrefix-$aosEnvironment-keyvault" 
+$keyvaultname = "$resourcePrefix-$aosEnvironment-keyvault"
 $storageAccountName = $resourcePrefix+$aosEnvironment+"storage"
-$functionName = "$resourcePrefix-$aosEnvironment-function" 
+$functionName = "$resourcePrefix-$aosEnvironment-function"
 
 
 #### Check if resource group for AKS exists
@@ -60,7 +60,7 @@ Write-Output "Import Maskinporten cert"
 az keyvault certificate import --vault-name $keyvaultname -n maskinportenclientcert -f $maskinportenclientcert --password $maskinportenclientcertpwd
 
 Write-Output "Create Function App"
-az functionapp create --resource-group $aosResourceGroupName --consumption-plan-location $location --runtime dotnet-isolated --functions-version 3 --name $functionName --storage-account $storageAccountName
+az functionapp create --resource-group $aosResourceGroupName --consumption-plan-location $location --runtime dotnet --runtime-version 6 --functions-version 4 --name $functionName --storage-account $storageAccountName
 az functionapp identity assign -g $aosResourceGroupName -n $functionName
 $funcprincialId = az functionapp identity show --name $functionName --resource-group $aosResourceGroupName --query principalId  --output tsv
 
@@ -80,7 +80,7 @@ az functionapp config appsettings set --name $functionname --resource-group $aos
 az functionapp config appsettings set --name $functionname --resource-group $aosResourceGroupName --settings "KeyVault:KeyVaultURI=$vaultUri"
 
 
-Write-Output "Set config"
+Write-Output "Publish app"
 Set-Location ..\src\Altinn-application-owner-system\Functions
-func azure functionapp publish $functionName
+func azure functionapp publish $functionName --csharp
 Set-Location ..\..\..\deployment

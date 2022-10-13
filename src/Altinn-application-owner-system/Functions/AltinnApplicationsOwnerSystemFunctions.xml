@@ -39,6 +39,11 @@
             The blob container to store incomming data
             </summary>
         </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.RegisteredSubStorageContainer">
+            <summary>
+            The blob container where registered subscription info are stored
+            </summary>
+        </member>
         <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.MaskinportenBaseAddress">
             <summary>
             The base adress for Maskinporten in the environment where this Application Owner System is used Example: https://ver2.maskinporten.no
@@ -57,6 +62,16 @@
         <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.LocalCertThumbprint">
             <summary>
             Thumbprint for when running functions locally
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.XMLFeedbackDataType">
+            <summary>
+            Datatype for xml feedback. If not set no feedback is generated
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings.XMLFeedbackEventType">
+            <summary>
+            Eventtype to generate xml feedback for
             </summary>
         </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Config.KeyVaultSettings">
@@ -94,6 +109,11 @@
             Name of the queue to push confirmation
             </summary>
         </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Config.QueueStorageSettings.FeedbackQueueName">
+            <summary>
+            Name of the queue to push feedback
+            </summary>
+        </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.EventsConfirmation">
             <summary>
             Azure Function that confirmes that data for a given instance is downloaded
@@ -110,6 +130,43 @@
             </summary>
             <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the result of the asynchronous operation.</returns>
         </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.EventsDeSubscriber">
+            <summary>
+            Azure Function that confirmes that data for a given instance is downloaded
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsDeSubscriber.#ctor(AltinnApplicationOwnerSystem.Functions.Services.Interface.ISubscription,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.EventsSubscriber})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.EventsFeedback"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsDeSubscriber.Run(System.Byte[],System.String)">
+            <summary>
+            Function method that removes event subscription when file is added to blob storage
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the result of the asynchronous operationŒ.</returns>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.EventsFeedback">
+            <summary>
+            Azure Function that confirmes that data for a given instance is downloaded
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsFeedback.#ctor(AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp,AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.EventsFeedback"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsFeedback.Run(System.String,Microsoft.Azure.Functions.Worker.FunctionContext)">
+            <summary>
+            Function method that is triggered by new element on events-feedback queue
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the result of the asynchronous operation.</returns>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsFeedback.GetInstanceInfoFromSource(System.Uri)">
+            <summary>
+            Creates an instance for a given event
+            </summary>
+        </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.EventsProcessor">
             <summary>
             Azure Function responsible for downloading data for a given instance.
@@ -117,7 +174,7 @@
             When finished it forward CloudEvent to confirmation queue
             </summary>
         </member>
-        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsProcessor.#ctor(AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp,AltinnApplicationOwnerSystem.Functions.Services.Interface.IPlatform,AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage,AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService)">
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsProcessor.#ctor(AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp,AltinnApplicationOwnerSystem.Functions.Services.Interface.IPlatform,AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage,AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.EventsProcessor})">
             <summary>
             Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.EventsProcessor"/> class.
             </summary>
@@ -153,6 +210,22 @@
             Webhook method to receive CloudEvents from Altinn Platform Events
             </summary>
         </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.EventsSubscriber">
+            <summary>
+            Azure Function that confirmes that data for a given instance is downloaded
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsSubscriber.#ctor(AltinnApplicationOwnerSystem.Functions.Services.Interface.ISubscription,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.EventsSubscriber})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.EventsFeedback"/> class.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.EventsSubscriber.Run(System.Byte[],System.String)">
+            <summary>
+            Function method that register a new subscription when file is added to blob storage
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the result of the asynchronous operationŒ.</returns>
+        </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Extensions.HttpClientExtension">
             <summary>
             This extension is created to make it easy to add a bearer token to a HttpRequests. 
@@ -164,7 +237,22 @@
             </summary>
             <returns>A HttpResponseMessage</returns>
         </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Extensions.HttpClientExtension.PutAsync(System.Net.Http.HttpClient,System.String,System.String,System.Net.Http.HttpContent)">
+            <summary>
+            Extension that add authorization header to request
+            </summary>
+            <returns>A HttpResponseMessage</returns>
+        </member>
         <member name="M:AltinnApplicationOwnerSystem.Functions.Extensions.HttpClientExtension.GetAsync(System.Net.Http.HttpClient,System.String,System.String)">
+            <summary>
+            Extension that add authorization header to request
+            </summary>
+            <param name="httpClient">The HttpClient</param>
+            <param name="authorizationToken">the authorization token (jwt)</param>
+            <param name="requestUri">The request Uri</param>
+            <returns>A HttpResponseMessage</returns>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Extensions.HttpClientExtension.DeleteAsync(System.Net.Http.HttpClient,System.String,System.String)">
             <summary>
             Extension that add authorization header to request
             </summary>
@@ -258,6 +346,74 @@
             Exception. Only populated if the push failed.
             </summary>
         </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Subscription">
+            <summary>
+            Subscription model
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.Id">
+            <summary>
+            Gets or sets the subscription id
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.Description">
+            <summary>
+            Gets or sets the subscription description
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.EndPoint">
+            <summary>
+            Gets or sets the subscription endpoint
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.SourceFilter">
+            <summary>
+            Gets or sets the subscription sourceFilter
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.SubjectFilter">
+            <summary>
+            Gets or sets the subscription subjectFilter
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.AlternativeSubjectFilter">
+            <summary>
+            Gets or sets the subscription alternativeSubjectFilter
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.TypeFilter">
+            <summary>
+            Gets or sets the subscription typeFilter
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.Consumer">
+            <summary>
+            Gets or sets the subscription consumer
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.CreatedBy">
+            <summary>
+            Gets or sets the subscription createdBy
+            </summary>
+        </member>
+        <member name="P:AltinnApplicationOwnerSystem.Functions.Subscription.Created">
+            <summary>
+            Gets or sets the subscription created
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Subscription.FromJson(System.String)">
+            <summary>
+            Deserializes the subscription from a JSON string.        
+            </summary>
+            <param name="json">The JSON string to deserialize</param>
+            <returns>The deserialized subscription</returns>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Subscription.ToJson">
+            <summary>
+            Serializes the subscription to a JSON string.
+            </summary>
+            <returns>Serialized subscription</returns>
+        </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService">
             <summary>
             App implementation of the instance service that talks to the given app
@@ -272,6 +428,9 @@
             <inheritdoc />
         </member>
         <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService.AddCompleteConfirmation(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AltinnAppService.AddXMLFeedback(System.String,System.String,System.String)">
             <inheritdoc/>
         </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.AuthenticationClientWrapper">
@@ -380,6 +539,9 @@
         <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService.PushToConfirmationQueue(System.String)">
             <inheritdoc/>
         </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.QueueService.PushToFeedbackQueue(System.String)">
+            <inheritdoc/>
+        </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService">
             <summary>
             Class that handles integration with Azure Blob Storage.
@@ -390,12 +552,37 @@
             Initializes a new instance of the <see cref="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService"/> class.
             </summary>
         </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.DeleteBlobFromContainer(System.String,System.String)">
+            <inheritdoc />
+        </member>
         <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.SaveBlob(System.String,System.String)">
             <summary>
             Saves data in blob storage defined in configuration.
             </summary>
         </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.SaveRegisteredSubscription(System.String,AltinnApplicationOwnerSystem.Functions.Subscription)">
+            <inheritdoc />
+        </member>
         <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.StorageService.UploadFromStreamAsync(System.String,System.IO.Stream)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Implementation.SubscriptionService">
+            <summary>
+            SubscriptionService implements ISubscription and handles subscriptions against Altinn.
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.SubscriptionService.#ctor(Microsoft.Extensions.Options.IOptions{AltinnApplicationOwnerSystem.Functions.Config.AltinnApplicationOwnerSystemSettings},System.Net.Http.HttpClient,AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationService,AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage,Microsoft.Extensions.Logging.ILogger{AltinnApplicationOwnerSystem.Functions.Services.Implementation.SubscriptionService})">
+            <summary>
+            Create a instance of SubscriptionService
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.SubscriptionService.GetSubscription(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.SubscriptionService.RegisterSubscription(System.String,AltinnApplicationOwnerSystem.Functions.Subscription)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Implementation.SubscriptionService.RemoveSubscription(System.String,System.Int32)">
             <inheritdoc/>
         </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp">
@@ -416,6 +603,14 @@
             Add to an instance that a given stakeholder considers the instance as no longer needed by them. The stakeholder has
             collected all the data and information they needed from the instance and expect no additional data to be added to it.
             The body of the request isn't used for anything despite this being a POST operation.
+            </remarks>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAltinnApp.AddXMLFeedback(System.String,System.String,System.String)">
+            <summary>
+            Add feedback.
+            </summary>
+            <remarks>
+            Add feedback to an instance.
             </remarks>
         </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IAuthenticationClientWrapper">
@@ -494,6 +689,13 @@
             <param name="content">The content to push to the queue in string format</param>
             <returns>Returns a queue receipt</returns>
         </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IQueueService.PushToFeedbackQueue(System.String)">
+            <summary>
+            Pushes the provided content to the feedback queue
+            </summary>
+            <param name="content">The content to push to the queue in string format</param>
+            <returns>Returns a queue receipt</returns>
+        </member>
         <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage">
             <summary>
             Interface for Storage where Application Owner system store received data
@@ -508,6 +710,44 @@
             <summary>
             Saves a stream to blob
             </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage.SaveRegisteredSubscription(System.String,AltinnApplicationOwnerSystem.Functions.Subscription)">
+            <summary>
+            Save registered subscription information
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.IStorage.DeleteBlobFromContainer(System.String,System.String)">
+            <summary>
+            Delete blob from container
+            </summary>
+        </member>
+        <member name="T:AltinnApplicationOwnerSystem.Functions.Services.Interface.ISubscription">
+            <summary>
+            Interface for managing event subscriptions
+            </summary>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.ISubscription.RegisterSubscription(System.String,AltinnApplicationOwnerSystem.Functions.Subscription)">
+            <summary>
+            Register a new subscription
+            </summary>
+            <param name="name">Name of the blob</param>
+            <param name="subscription">The subscription to register</param>
+            <returns>The registered subscription</returns>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.ISubscription.GetSubscription(System.String)">
+            <summary>
+            Get a subscription by id
+            </summary>
+            <param name="subscriptionId">The id of the subscription</param>
+            <returns>The subscription</returns>
+        </member>
+        <member name="M:AltinnApplicationOwnerSystem.Functions.Services.Interface.ISubscription.RemoveSubscription(System.String,System.Int32)">
+            <summary>
+            Delete a subscription by id
+            </summary>
+            <param name="name">Name of the blob</param>
+            <param name="subscriptionId">The id of the subscription</param>
+            <returns>The deleted subscription</returns>
         </member>
         <member name="T:AltinnApplicationsOwnerSystem.Functions.Program">
             <summary>
