@@ -7,7 +7,7 @@
     <RootNamespace>AltinnApplicationsOwnerSystem.Functions</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Altinn.Platform.Storage.Interface" Version="3.11.0" />
+    <PackageReference Include="Altinn.Platform.Storage.Interface" Version="4.5.0" />
     <PackageReference Include="Azure.Identity" Version="1.8.0" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.4.0" />
     <PackageReference Include="Azure.Security.KeyVault.Certificates" Version="4.4.0" />
